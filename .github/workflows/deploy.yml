@@ -24,10 +24,15 @@ jobs:
           mkdir -p /root/stazh/sergey/
           cd /root/stazh/sergey/
           if [ ! -d .git ]; then
-            git clone https://github.com/Ssergeevi4/Nil.git .
-          fi
+            git clone https://github.com/Ssergeevi4/Nil.git /root/stazh/sergey_temp/
+            mv /root/stazh/sergey_temp/* /root/stazh/sergey/ || true
+            mv /root/stazh/sergey_temp/.* /root/stazh/sergey/ 2>/dev/null || true
+            rm -rf /root/stazh/sergey_temp
+          else
           git fetch
           git reset --hard origin/main
+          fi
+          
           pip3 install -r requirements.txt
           pkill -f "python3 main.py" || true
           nohup python3 main.py >> /root/stazh/sergey/bot.log 2>&1 &
