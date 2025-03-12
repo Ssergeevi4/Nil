@@ -5,7 +5,6 @@ from app.handlers import router
 # Регистрируем роутер в диспетчере
 dp.include_router(router)
 
-
 # Запуск бота
 async def main():
     print('Бот запущен...')
