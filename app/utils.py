@@ -25,7 +25,7 @@ dp = Dispatcher(bot=bot)
 
 # Подключение к Google Sheets
 scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
-creds = Credentials.from_service_account_file('../TelegramBot.json', scopes=scope)
+creds = Credentials.from_service_account_file('TelegramBot.json', scopes=scope)
 client = gspread.authorize(creds)
 
 # Открываем таблицу
