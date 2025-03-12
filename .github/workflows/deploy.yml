@@ -47,9 +47,10 @@ jobs:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
         run: |
           sshpass -p "$PASSWORD" scp -o StrictHostKeyChecking=no deploy.sh $USERNAME@$HOST:/tmp/
-          sshpass -p "$PASSWORD" ssh -o StrictHostKeyChecking=no $USERNAME@$HOST << 'EOF'
+          sshpass -p "$PASSWORD" ssh -o StrictHostKeyChecking=no $USERNAME@$HOST << "EOF"
             echo "TELEGRAM_TOKEN=$TELEGRAM_TOKEN" > /root/stazh/sergey/.env
             printf "%b" "$GOOGLE_CREDENTIALS" > /root/stazh/sergey/TelegramBot.json
-            ls -la /root/stazh/sergey/
+            cat /root/stazh/sergey/.env
+            ls -l /root/stazh/sergey/TelegramBot.json
             bash /tmp/deploy.sh && rm /tmp/deploy.sh
           EOF
