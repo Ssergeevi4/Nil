@@ -1,11 +1,11 @@
 from aiogram import types, Router
 from aiogram.filters import Command  # фильтрация событий
 from aiogram.fsm.context import FSMContext
-from keyboards import admin_keyboard, user_keyboard, cancel_keyboard, deadline_keyboard, confirm_keyboard
-from states import TaskStates
-from utils import check_if_admin, get_tasks, get_users, get_chat, save_clear, TtC, users_sheet, chats_sheet
+from app.keyboards import admin_keyboard, user_keyboard, cancel_keyboard, deadline_keyboard, confirm_keyboard
+from app.states import TaskStates
+from app.utils import check_if_admin, get_tasks, get_users, get_chat, save_clear, TtC, users_sheet, chats_sheet
 from datetime import datetime, timedelta
-from utils import bot
+from app.utils import bot
 
 router = Router()
 

@@ -4,7 +4,7 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from aiogram import types
 from aiogram import Bot, Dispatcher
 from aiogram.fsm.context import FSMContext
-from keyboards import admin_keyboard, user_keyboard
+from app.keyboards import admin_keyboard, user_keyboard
 import json
 import os
 from dotenv import load_dotenv
