@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 
 # Telegram токен
 load_dotenv()
-TOKEN = os.getenv('TELEGRAM_TOKEN')
+TOKEN = os.getenv("TELEGRAM_TOKEN")
 if not TOKEN:
     raise  ValueError("TELEGRAM_TOKEN не найден в переменных окружения")
 bot = Bot(token=TOKEN)
