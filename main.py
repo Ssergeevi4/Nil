@@ -1,6 +1,5 @@
-from aiogram import Bot, Dispatcher
-from utils import dp, bot
-from handlers import router
+from app.utils import dp, bot
+from app.handlers import router
 
 
 # Регистрируем роутер в диспетчере

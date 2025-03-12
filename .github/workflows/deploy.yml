@@ -1,0 +1,46 @@
+name: Deploy Telegram Bot
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install sshpass
+        run: sudo apt-get install -y sshpass
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create deploy script
+        run: |
+          cat > deploy.sh << 'SCRIPT'
+          #!/bin/bash
+          apt update
+          apt install -y python3 python3-pip git
+          mkdir -p /root/stazh/sergey/
+          cd /root/stazh/sergey/
+          git fetch
+          git reset --hard origin/main
+          pip3 install -r requirements.txt
+          pkill -f "python3 main.py" || true
+          nohup python3 main.py >> /root/stazh/sergey/bot.log 2>&1 &
+          SCRIPT
+          chmod +x deploy.sh
+
+      - name: Deploy and run bot
+        env:
+          HOST: ${{ secrets.HOST }}
+          USERNAME: ${{ secrets.USERNAME }}
+          PASSWORD: ${{ secrets.PASSWORD }}
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+        run: |
+          sshpass -p "$PASSWORD" scp -o StrictHostKeyChecking=no deploy.sh $USERNAME@$HOST:/tmp/
+          sshpass -p "$PASSWORD" ssh -o StrictHostKeyChecking=no $USERNAME@$HOST << 'EOF'
+            echo "TELEGRAM_TOKEN=$TELEGRAM_TOKEN" > /root/stazh/sergey/.env
+            echo "$GOOGLE_CREDENTIALS" > /root/stazh/sergey/TelegramBot.json
+            bash /tmp/deploy.sh && rm /tmp/deploy.sh
+          EOF

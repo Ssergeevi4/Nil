@@ -6,18 +6,26 @@ from aiogram import Bot, Dispatcher
 from aiogram.fsm.context import FSMContext
 from keyboards import admin_keyboard, user_keyboard
 import json
+import os
+from dotenv import load_dotenv
 
 # Telegram токен
-with open("D:/TOKEN/TOKEN.json", "r") as file:
-    config = json.load(file)
-TOKEN = config["telegram_token"]
+load_dotenv()
+TOKEN = os.getenv('TELEGRAM_TOKEN')
+if not TOKEN:
+    raise  ValueError("TELEGRAM_TOKEN не найден в переменных окружения")
 bot = Bot(token=TOKEN)
-dp = Dispatcher(bot=bot)
 
+# with open("D:/TOKEN/TOKEN.json", "r") as file:
+#     config = json.load(file)
+# TOKEN = config["telegram_token"]
+# bot = Bot(token=TOKEN)
+
+dp = Dispatcher(bot=bot)
 
 # Подключение к Google Sheets
 scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
-creds = Credentials.from_service_account_file('TelegramBot.json', scopes=scope)
+creds = Credentials.from_service_account_file('../TelegramBot.json', scopes=scope)
 client = gspread.authorize(creds)
 
 # Открываем таблицу
@@ -53,8 +61,8 @@ def get_tasks():
         return 'Задач пока нет.'
     # Строка с задачей, ответственным и дедлайном
     return '\n'.join([
-                         f'{task[0]}. {task[1]} (Ответственный: @{task[2] if len(task) > 2 else "Не назначен"}, Дедлайн: {task[3] if len(task) > 3 else "Не указан"})'
-                         for task in tasks])
+        f'{task[0]}. {task[1]} (Ответственный: @{task[2] if len(task) > 2 else "Не назначен"}, Дедлайн: {task[3] if len(task) > 3 else "Не указан"})'
+        for task in tasks])
 
 
 # Ответственный
